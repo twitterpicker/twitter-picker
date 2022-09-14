@@ -1,0 +1,24 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+
+  /* remove scroll bar */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* chrome */
+*::-webkit-scrollbar {
+  display: none;
+}
+
+
+html,
+body,
+#__next,
+#__next>div {
+  height: 100%;
+}
