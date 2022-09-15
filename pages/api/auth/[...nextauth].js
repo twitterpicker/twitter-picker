@@ -7,5 +7,6 @@ export default NextAuth({
       clientId: process.env.NEXT_PUBLIC_TWITTER_CONSUMER_KEY,
       clientSecret: process.env.NEXT_PUBLIC_TWITTER_CONSUMER_SECRET,
     })
-  ]
+  ],
+  secret: process.env.NEXT_PUBLIC_AUTH_SECRET,
 });
