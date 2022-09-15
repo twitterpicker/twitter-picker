@@ -52,7 +52,7 @@ export default function Home() {
         <button onClick={() => signIn()}>Sign in</button>
         <div>
           <input value={queryTweetLink} placeholder='tweet link' type="text" onChange={(event) => { setQueryTweetLink(event.target.value) }} />
-          <button onClick={async () => { console.log(process.env.NEXT_PUBLIC_TWITTER_CONSUMER_KEY) }}>view winner</button>
+          <button onClick={async () => { }}>view winner</button>
         </div>
       </>
     )
