@@ -1,8 +1,13 @@
 export default function handler(req, res) {
   res.status(200).json({
     version: "1.0.0",
+
     functionalities: {
-      getRetweetersOfTweetID: "/api/get-retweeters-of/:id/bearer/:token/for/:name",
+      getRetweetersOfTweetID: {
+        method: "post",
+        endpoint: "/api/get-retweeters",
+        takes: ["twitterToken", "tweetID", "requesterName"],
+      },
     }
   })
 }

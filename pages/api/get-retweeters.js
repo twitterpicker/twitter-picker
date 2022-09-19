@@ -1,12 +1,18 @@
 import { Client } from "twitter-api-sdk";
 
+
+// returns all the 1. retweeters 2. number of requests it took 3. num of documents it retrieved
 async function getAllRetweetersOfTweetID(token, tweetID) {
+
     try {
+        // create client
         const client = new Client(token);
         let data = [];
         let numOfRequests = 0;
         const retweeters = client.users.tweetsIdRetweetingUsers(tweetID);
 
+        // collect all retweeters info into data
+        // also add number of requests
         for await (const page of retweeters) {
             data = data.concat(page.data);
             numOfRequests++;
@@ -73,9 +79,8 @@ export default async function handler(request, response) {
         return;
     }
 
+    //  fetch all retweeters, request count, fetched document count using the method below
     let data = await getAllRetweetersOfTweetID(twitterToken, tweetID);
-    //  fetch all retweeters, request count, fetched tweet count and a winner using the method below
-    //  return response of made of the fetched values
 
 
 
