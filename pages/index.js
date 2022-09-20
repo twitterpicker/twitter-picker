@@ -13,6 +13,7 @@ const APP_STATE =
 }
 
 const START_ANIMATION_DURATION = 3;
+const APP_NAME = "picker";
 
 
 function Profile({
@@ -24,11 +25,11 @@ function Profile({
       <div className='profile_card'>
         <img className='profile_image' src='/anon_profile.jpg' />
         <p>
-          You aren't signed in.
+          {"You aren't signed in."}
           <span className='profile_name'>
             {" sign in "}
           </span>
-          to pick a winner.
+          {"to pick a winner."}
         </p>
         <button className='button' onClick={() => signIn()}>Sign in</button>
       </div>
@@ -40,7 +41,7 @@ function Profile({
         <div className='profile_card'>
           <img className='profile_image' src={profileImage} />
           <p>
-            You are logged in as
+            {"You are logged in as"}
             <span className='profile_name'>
               {" " + name}
             </span>
@@ -131,7 +132,7 @@ export default function Home() {
         <div className='start_animation_app_info'>
           <img className='start_animation_app_logo' src='/logo.png' />
         </div>
-        <p className='start_animation_app_name'>Picker</p>
+        <p className='start_animation_app_name'>{APP_NAME}</p>
       </div>
     )
   }
@@ -141,7 +142,7 @@ export default function Home() {
         <div className='start_animation_app_info'>
           <img className='start_animation_app_logo' src='/logo.png' />
         </div>
-        <p className='start_animation_app_name'>Picker</p>
+        <p className='start_animation_app_name'>{APP_NAME}</p>
       </div>
     )
   }
@@ -154,7 +155,7 @@ export default function Home() {
       <div className='main'>
         <div className='app_info'>
           <img className='app_logo' src='/logo.png' />
-          <p className='app_name'>Picker</p>
+          <p className='app_name'>{APP_NAME}</p>
         </div>
         <Profile name={session?.user?.name} profileImage={session?.user?.image} />
         <input className='input' value={tweetLink} placeholder='tweet link' type="text" onChange={(event) => { setTweetLink(event.target.value) }} />
@@ -172,7 +173,9 @@ export default function Home() {
     return (
       <div className='main'>
         <Profile />
-        generation result
+        {
+          "GENERATION RESULT"
+        }
       </div>
     )
   }
@@ -180,7 +183,9 @@ export default function Home() {
     return (
       <div className='main'>
         <Profile />
-        search result
+        {
+          "SEARCH RESULT"
+        }
       </div>
     )
   }
@@ -189,7 +194,7 @@ export default function Home() {
       <div className='main'>
         <div className='app_info'>
           <img className='app_logo' src='/logo.png' />
-          <p className='app_name'>Picker</p>
+          <p className='app_name'>{APP_NAME}</p>
         </div>
         <Profile />
         <input className='input' value={queryTweetLink} placeholder='tweet link' type="text" onChange={(event) => { setQueryTweetLink(event.target.value) }} />
