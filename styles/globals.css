@@ -5,7 +5,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-family: 'Dangrek', cursive;
   -ms-overflow-style: none;
   /* IE and Edge */
   scrollbar-width: none;
@@ -25,6 +25,7 @@ body,
   height: 100%;
   background-color: #1D1D1F;
 }
+
 
 /* keyframes of animations */
 @keyframes fadeEffectStartAnimation {
@@ -145,6 +146,7 @@ body,
 .input {
   width: 80%;
   margin: 40px;
+  margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
@@ -178,11 +180,12 @@ body,
 }
 
 /* app info */
-.app_info{
+.app_info {
   width: 100%;
   display: flex;
   align-items: center;
 }
+
 .app_logo {
   margin: 10px;
   height: 55px;
@@ -192,12 +195,50 @@ body,
   box-shadow:
     12px 12px 16px 0 rgba(0, 0, 0, 0.25),
     -2px -2px 2px 0 rgba(255, 255, 255, 0.3);
+  cursor: pointer;
 }
 
 .app_name {
   font-family: 'Dangrek', cursive;
   color: #dbdbdb;
   font-size: xx-large;
+}
+
+.tweet_link_error {
+  margin-top: 15px;
+  font-family: 'Dangrek', cursive;
+  color: #ff3737a0;
+  font-size: xx-large;
+}
+
+.query_unsuccessful {
+  margin: auto;
+  width: 90%;
+  max-width: 90%;
+  font-family: 'Dangrek', cursive;
+  color: #ff3737a0;
+  text-align: center;
+  font-size: large;
+}
+
+.winner {
+  margin: auto;
+  margin-top: 25px;
+  width: 90%;
+  max-width: 90%;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow:
+    12px 12px 16px 0 #00000040,
+    -2px -2px 2px 0 #ffffff1a;
+
+  word-break: break-all;
+  color: #dbdbdb;
+  font-size: large;
+}
+
+.winner a{
+  color: #dbdbdb80;
 }
 
 /* on larger screens */
