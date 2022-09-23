@@ -1,15 +1,11 @@
-import { signIn, signOut, useSession, getSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { twitter_tokens } from '../tokens/tokens';
+import { getWinnerFromDatabase } from '../database/winner';
+import { pick } from '../utils/pick';
 
 const APP_STATE =
 {
   START_ANIMATION: "START_ANIMATION",
-  LOAD_ANIMATION: "LOAD_ANIMATION",
-  WINNER_GENERATION: "WINNER_GENERATION",
-  WINNER_GENERATON_RESULT: "WINNER_RESULT",
-  SEARCH_WINNER: "SEARCH_WINNER",
-  WINNER_SEARCH_RESULT: "WINNER_SEARCH_RESULT"
 }
 
 const START_ANIMATION_DURATION = 3;
@@ -19,6 +15,7 @@ const APP_NAME = "picker";
 function Profile({
   profileImage,
   name,
+  setTweetLinkError,
 }) {
   if (!name && !profileImage) {
     return (
@@ -46,7 +43,10 @@ function Profile({
               {" " + name}
             </span>
           </p>
-          <button className='button' onClick={() => signOut({ redirect: false })}>Sign out</button>
+          <button className='button' onClick={() => {
+            signOut({ redirect: false });
+            setTweetLinkError(null);
+          }}>Sign out</button>
         </div>
       </>
     )
@@ -65,18 +65,50 @@ export default function Home() {
   // stores the winner object 
   const [generatedWinner, setGeneratedWinner] = useState(null);
 
+  const [searchedWinner, setSearchedWinner] = useState(null);
+
   // stores the tweet link the winner generator queried for
   const [tweetLink, setTweetLink] = useState("");
+
+  // stores the tweetLinkError message
+  const [tweetLinkError, setTweetLinkError] = useState(null);
 
   // stores the query tweet link, any user queries about a tweet
   const [queryTweetLink, setQueryTweetLink] = useState("");
 
+  // is loading from server
+  const [isLoading, setIsLoading] = useState(false);
 
+
+
+
+  // regex expression checker for twitter status URL
+  const isValidTweetLink = (urlString) => {
+    var urlPattern = /^https?:\/\/(www.)?(mobile.)?twitter\.com\/(?:#!\/)?(\w+)\/status(es)?\/(\d+)/
+    let isValidUrl = urlString.match(urlPattern);
+    return isValidUrl;
+  }
 
   // returns the tweet ID from a valid tweet link
-  function getTweetIDFromLink(link) {
-    const arrayAfterSplit = link.trim().split("/");
-    return arrayAfterSplit[arrayAfterSplit.length - 1];
+  function getTweetIDFromLink(statusLink) {
+
+    if (statusLink === "") {
+      setTweetLinkError(null);
+      return;
+    };
+
+    let tweetId = "";
+    if (isValidTweetLink(statusLink)) {
+      setTweetLinkError(null);
+      let splitted = statusLink.split("/");
+      for (let i = 0; i < splitted.length; i++) {
+        if (splitted[i] === "status" || splitted[i] === "statuses") tweetId = splitted[i + 1];
+      }
+    }
+    else {
+      setTweetLinkError("Not A Valid Tweet Link!");
+    }
+    return tweetId;
   }
 
 
@@ -86,47 +118,67 @@ export default function Home() {
     // if empty query : doesn't do anything
     if (!id || id === "") return;
 
+    if (tweetLinkError) return;
+
     try {
-      // needs to get the twitter token : (with least number of retweet fetched)
-      const token = twitter_tokens[0];
-
+      // start loading
+      setIsLoading(true);
       // try fetching retweeters of ${id}, by ${name} with retrieved token 
-      const res = await fetch("api/get-retweeters", {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          params: {
-            twitterToken: token,
-            tweetID: id,
-            requesterName: name,
-          },
-        }),
-      });
-
-      let result = await res.json();
-      // calculate winner and set the winner
-      setGeneratedWinner(result);
+      const result = await pick(name, id)
       // if winner is generated, signout
-    } catch (err) {
-      console.log(err);
+      if (result) signOut({ redirect: false });
+      // set winner to be generated
+      setGeneratedWinner(result);
+      // stop loading
+      setIsLoading(false);
     }
+    // there was an error
+    catch (err) {
+    }
+  }
+
+
+  async function searchWinner(tweetID) {
+    // if empty query : doesn't do anything
+    if (!tweetID || tweetID === "") return;
+    if (tweetLinkError) return;
+    // start loading
+    setIsLoading(true);
+    let response = await getWinnerFromDatabase(tweetID);
+    if (response.data && response.data.length !== 0) {
+      setSearchedWinner({ ...response.data[0], noWinner: false });
+    }
+    else {
+      setSearchedWinner({ noWinner: true })
+    }
+    // stop loading
+    setIsLoading(false);
   }
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setAppState(APP_STATE.SEARCH_WINNER);
+      setAppState(null);
     }, (START_ANIMATION_DURATION * 1000));
     return () => clearTimeout(timer);
   }, []);
 
 
+  useEffect(() => {
+    if (status === "authenticated") getTweetIDFromLink(tweetLink);
+    else if (status === "unauthenticated") getTweetIDFromLink(queryTweetLink);
+  }, [tweetLink, queryTweetLink]);
 
 
 
-  // 2 loading state
-  // page reload animation
-  // generate/search winner animation
+
+
+
+
+
+
+
   if (appState === APP_STATE.START_ANIMATION) {
+    console.log("start animation")
     return (
       <div className='start_animation_container'>
         <div className='start_animation_app_info'>
@@ -136,72 +188,117 @@ export default function Home() {
       </div>
     )
   }
-  else if (appState === APP_STATE.LOAD_ANIMATION) {
+  else if (isLoading || status === "loading") {
+    console.log("load animation")
     return (
       <div className='start_animation_container'>
         <div className='start_animation_app_info'>
           <img className='start_animation_app_logo' src='/logo.png' />
         </div>
-        <p className='start_animation_app_name'>{APP_NAME}</p>
+        <p className='start_animation_app_name'>{"fetching data ..."} </p>
       </div>
     )
   }
 
   // 1 case for authorized user
   // generate the winner for that tweet
-  if (session) {
+  else if (status === "authenticated" && !generatedWinner) {
+    console.log("generate winner")
     return (
-
       <div className='main'>
         <div className='app_info'>
           <img className='app_logo' src='/logo.png' />
-          <p className='app_name'>{APP_NAME}</p>
+          <p className='app_name'>{APP_NAME} </p>
         </div>
-        <Profile name={session?.user?.name} profileImage={session?.user?.image} />
+        <Profile name={session?.user?.name} profileImage={session?.user?.image} setTweetLinkError={setTweetLinkError} />
         <input className='input' value={tweetLink} placeholder='tweet link' type="text" onChange={(event) => { setTweetLink(event.target.value) }} />
         <button className='button' onClick={async () => await generateWinner(session.user.name, getTweetIDFromLink(tweetLink))}>generate winner</button>
+        {tweetLinkError && <p className='tweet_link_error'>{tweetLinkError}</p>}
       </div>
     )
   }
-
 
   // 3 cases for unauthinticated use 
   // (if there is a winner generated), show that result
   // else (if there is a winner result after query), show that result
   // else, show the option to search a winner of a tweet
-  if (!session && appState === APP_STATE.WINNER_GENERATON_RESULT) {
+  else if (status === "unauthenticated" && generatedWinner) {
+    console.log("generated winner result")
     return (
+
       <div className='main'>
-        <Profile />
+        <div className='app_info'>
+          <img className='app_logo' src='/back.png' onClick={() => { setGeneratedWinner(null) }} />
+          <p className='app_name'>{APP_NAME} </p>
+        </div>
         {
-          "GENERATION RESULT"
+          (generatedWinner.data === null) &&
+          <div>
+            no winner found
+          </div>
+        }
+        {
+          (generatedWinner.data !== null) &&
+          <div>
+            {JSON.stringify(generatedWinner)}
+          </div>
         }
       </div>
     )
   }
-  else if (!session && appState === APP_STATE.WINNER_SEARCH_RESULT) {
+  else if (status === "unauthenticated" && searchedWinner) {
+    console.log("searched winner result")
+
     return (
       <div className='main'>
-        <Profile />
+        <div className='app_info'>
+          <img className='app_logo' src='/back.png' onClick={() => { setSearchedWinner(null) }} />
+          <p className='app_name'>{APP_NAME} </p>
+        </div>
+
         {
-          "SEARCH RESULT"
+          (searchedWinner.noWinner) &&
+          <div className='query_unsuccessful'>
+            <h1>
+              {"Sorry! no winner found for the given tweet . . ."}
+            </h1>
+          </div>
+        }
+        {
+          (!searchedWinner.noWinner) &&
+          <div className='winner'>
+            <h2>{"GiveAway tweet :"}</h2>
+            <a href={"https://twitter.com/user/status/" + searchedWinner.tweetID} target="_blank" rel="noopener noreferrer">
+              {"https://twitter.com/user/status/" + searchedWinner.tweetID}
+            </a>
+            <h2>{"Winner Handle :"}
+              <span className='profile-link'> {"@" + searchedWinner.tweeterHandle} </span>
+            </h2>
+            <a href={"https://twitter.com/" + searchedWinner.tweeterHandle} target="_blank" rel="noopener noreferrer"> 
+            {"Visit winner profile"}
+            </a>
+            <h2>{"Selected at, "}  <span>{new Date(searchedWinner.timestamp).toLocaleDateString('en-US')}</span> </h2>
+          </div>
         }
       </div>
     )
   }
-  else if (!session && appState === APP_STATE.SEARCH_WINNER) {
+  else if (status === "unauthenticated") {
+    console.log("search for winner")
     return (
       <div className='main'>
         <div className='app_info'>
           <img className='app_logo' src='/logo.png' />
-          <p className='app_name'>{APP_NAME}</p>
+          <p className='app_name'>{APP_NAME} </p>
         </div>
-        <Profile />
+        <Profile setTweetLinkError={setTweetLinkError} />
         <input className='input' value={queryTweetLink} placeholder='tweet link' type="text" onChange={(event) => { setQueryTweetLink(event.target.value) }} />
-        <button className='button' onClick={async () => { }}>view winner</button>
+        <button className='button' onClick={async () => { await searchWinner(getTweetIDFromLink(queryTweetLink)) }}>view winner</button>
+        {tweetLinkError && <p className='tweet_link_error'>{tweetLinkError}</p>}
       </div>
     )
   }
+
 
 
 }
