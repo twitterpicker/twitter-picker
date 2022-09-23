@@ -1,5 +1,5 @@
 import { Client } from "twitter-api-sdk";
-import { getMostViableToken } from "../../database/token";
+import { addTokenToDatabase, getMostViableToken } from "../../database/token";
 
 
 // returns a valid, random retweeter from a list of retweeters
@@ -35,7 +35,7 @@ async function getAllRetweetersOfTweetID(token, tweetID, retweetLimit) {
         for await (const page of retweeters) {
             if (page?.data) {
                 data = data.concat(page.data);
-                if(data?.length >= retweetLimit) break;
+                if (data?.length >= retweetLimit) break;
             }
             numOfRequests++;
         }
@@ -90,8 +90,8 @@ export default async function handler(request, response) {
 
 
     // get author of the given tweetID
-    let authorName;
-    if (twitterToken) authorName = await getAuthorNamefromTweetID(twitterToken, tweetID);
+    let authorName = null;
+    if (twitterToken?.token) authorName = await getAuthorNamefromTweetID(twitterToken.token, tweetID);
 
     // if 
     // - the tweet is valid,
@@ -108,10 +108,10 @@ export default async function handler(request, response) {
     }
 
     //  fetch all retweeters, request count, fetched document count using the method below
-    let { retweeters, numOfDocuments, numOfRequests } = await getAllRetweetersOfTweetID(twitterToken, tweetID, retweetLimit);
-
+    let { retweeters, numOfDocuments, numOfRequests } = await getAllRetweetersOfTweetID(twitterToken.token, tweetID, retweetLimit);
     let randomRetweeter = getRandomRetweeter(retweeters);
 
+    await addTokenToDatabase(twitterToken.token, (twitterToken.requests + numOfRequests), (twitterToken.fetched + numOfDocuments));
 
 
     response.status(200).json({

@@ -5,9 +5,28 @@ async function getTokensFromDatabase() {
     return response;
 }
 
-async function getMostViableToken()
-{
-    return "AAAAAAAAAAAAAAAAAAAAAEG5gwEAAAAAQWyzq1e4H1rVtBSqcPK%2FpbpIQy4%3DJqboq6M3OCgCIuFpWNW3oxn67kwmRK5XItFcZQYkaBOj0Vn2mT";
+async function addTokenToDatabase(token, requests, fetched) {
+    const response = await supabase.from('tokens').upsert([{
+        token: token,
+        requests: requests,
+        fetched: fetched,
+    }]);
+    return response;
 }
 
-export { getMostViableToken }
+async function getMostViableToken() {
+    const { data, error } = await getTokensFromDatabase();
+    let lowest = null;
+    if (data && data.length !== 0) {
+        lowest = data[0];
+        for(let i = 1; i < data.length; i++)
+        {
+            if(data[i].fetched < lowest.fetched) lowest = data[i];
+        }
+
+    }
+    console.log(lowest);
+    return lowest;
+}
+
+export { addTokenToDatabase, getMostViableToken }
