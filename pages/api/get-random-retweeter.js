@@ -76,7 +76,7 @@ export default async function handler(request, response) {
 
     // if not a post request! No business being here, fuck off punk.
     if (request.method !== 'POST') {
-        response.status(405).json({ error_message: 'Only POST requests allowed' });
+        response.status(405).json({ error_message: 'Only POST requests allowed', x: x });
         return;
     }
 

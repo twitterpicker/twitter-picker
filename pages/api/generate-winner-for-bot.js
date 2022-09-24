@@ -14,7 +14,7 @@ async function getAuthorIdfromTweetID(token, tweetID) {
                 "user.fields": ["name"],
             }
         );
-        return lookupTweetById?.includes?.users[0]?.name;
+        return lookupTweetById?.includes?.users[0]?.id;
     }
     catch (error) {
         return null;
@@ -26,7 +26,7 @@ export default async function handler(request, response) {
 
     // if not a post request! No business being here, fuck off punk.
     if (request.method !== 'POST') {
-        response.status(405).json({ error_message: 'Only POST requests allowed' });
+        response.status(405).json({ error_message: 'Only POST requests allowed'});
         return;
     }
 
@@ -43,7 +43,15 @@ export default async function handler(request, response) {
 
     let twitterToken = await getMostViableToken();
 
-    let authorID = await getAuthorIdfromTweetID(twitterToken, tweetID);
+    let authorID = await getAuthorIdfromTweetID(twitterToken.token, tweetID);
+
+    let isVerified = authorID && requesterID && (authorID === requesterID);
+
+    if(!isVerified)
+    {
+        response.json({ message: "The given tweet was not authored by you. Can't select winner!" });
+        return;
+    }
 
     //  fetch all retweeters, request count, fetched document count using the method below
     let { retweeters, numOfDocuments, numOfRequests } = await getAllRetweetersOfTweetID(twitterToken.token, tweetID, retweetLimit);
