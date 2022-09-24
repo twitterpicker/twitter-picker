@@ -22,9 +22,9 @@ export default async function handler(request, response) {
         return;
     }
 
-    let response = await getWinnerFromDatabase(tweetID);
-    if (response.data && response.data.length !== 0) {
-        let winner = response.data[0];
+    let databaseResponse = await getWinnerFromDatabase(tweetID);
+    if (databaseResponse.data && databaseResponse.data.length !== 0) {
+        let winner = databaseResponse.data[0];
         let message = JSON.stringify(winner);
         response.json({ message: message });
         return;
