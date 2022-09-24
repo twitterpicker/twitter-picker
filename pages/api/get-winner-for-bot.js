@@ -25,7 +25,10 @@ export default async function handler(request, response) {
     let databaseResponse = await getWinnerFromDatabase(tweetID);
     if (databaseResponse.data && databaseResponse.data.length !== 0) {
         let winner = databaseResponse.data[0];
-        let message = JSON.stringify(winner);
+
+        let message = `The winner for the given tweet giveaway is, @${winner.tweeterHandle}.
+        To visit the winner, go to, https://twitter.com/${winner.tweeterHandle}.
+        `;
         response.json({ message: message });
         return;
     }
