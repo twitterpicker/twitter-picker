@@ -210,7 +210,7 @@ export default function Home() {
     return (
       <div className='main'>
         <div className='app_info'>
-          <img className='app_logo' src='/logo.png' />
+          <img className='app_logo' src={isInputFocused ? '/back.png' : '/logo.png'} />
           <p className='app_name'>{APP_NAME} </p>
         </div>
         {
@@ -301,7 +301,7 @@ export default function Home() {
     return (
       <div className='main'>
         <div className='app_info'>
-          <img className='app_logo' src='/logo.png' />
+          <img className='app_logo' src={isInputFocused ? '/back.png' : '/logo.png'} />
           <p className='app_name'>{APP_NAME} </p>
         </div>
         {
