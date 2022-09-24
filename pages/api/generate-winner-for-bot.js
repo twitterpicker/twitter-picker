@@ -14,7 +14,7 @@ async function getAuthorIdfromTweetID(token, tweetID) {
                 "user.fields": ["name"],
             }
         );
-        return lookupTweetById?.includes?.users[0]?.id;
+        return lookupTweetById?.includes?.users[0]?.name;
     }
     catch (error) {
         return null;
