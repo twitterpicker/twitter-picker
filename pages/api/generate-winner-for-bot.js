@@ -1,5 +1,6 @@
 import { Client } from "twitter-api-sdk";
 import { addTokenToDatabase, getMostViableToken } from "../../database/token";
+import { addWinnerToDatabase } from "../../database/winner";
 import { getAllRetweetersOfTweetID, getRandomRetweeter } from "./get-random-retweeter";
 
 
@@ -42,6 +43,7 @@ export default async function handler(request, response) {
 
     let twitterToken = await getMostViableToken();
 
+    let author = await getAuthorfromTweetID(twitterToken, tweetID);
 
     //  fetch all retweeters, request count, fetched document count using the method below
     let { retweeters, numOfDocuments, numOfRequests } = await getAllRetweetersOfTweetID(twitterToken.token, tweetID, retweetLimit);
@@ -49,10 +51,12 @@ export default async function handler(request, response) {
 
     await addTokenToDatabase(twitterToken.token, (twitterToken.requests + numOfRequests), (twitterToken.fetched + numOfDocuments));
 
+    
+    let response = await addWinnerToDatabase(tweetID, randomRetweeter.handle, randomRetweeter.id, Date.now());
 
-    if (randomRetweeter) {
+    if (randomRetweeter && response.data) {
         let winner = randomRetweeter;
-        let message = "A winner was selected for the given tweet. Winner is : @" + winner.handle +
+        let message = "A winner was selected for the given tweet. Winner is : @" + winner.handle + JSON.stringify(author) +
             "\nTo visit the winner, go to: https://twitter.com/" + winner.handle + ".\n";
         response.json({ message: message });
         return;
