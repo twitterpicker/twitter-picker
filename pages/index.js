@@ -127,7 +127,6 @@ export default function Home() {
       // start loading
       setIsLoading(true);
       // try fetching retweeters of ${id}, by ${name} with retrieved token 
-      console.log(1);
       const winner = await pick(name, id);
       setGeneratedWinner(winner);
       // if winner is generated, signout
@@ -143,10 +142,6 @@ export default function Home() {
       console.log(err);
     }
   }
-
-  useEffect(() => {
-    console.log(generatedWinner);
-  }, [generatedWinner]);
 
 
   async function searchWinner(tweetID) {
@@ -189,7 +184,6 @@ export default function Home() {
 
 
   if (appState === APP_STATE.START_ANIMATION) {
-    console.log("start animation")
     return (
       <div className='start_animation_container'>
         <div className='start_animation_app_info'>
@@ -200,7 +194,6 @@ export default function Home() {
     )
   }
   else if (isLoading || status === "loading") {
-    console.log("load animation")
     return (
       <div className='start_animation_container'>
         <div className='start_animation_app_info'>
@@ -214,7 +207,6 @@ export default function Home() {
   // 1 case for authorized user
   // generate the winner for that tweet
   else if (status === "authenticated" && !generatedWinner) {
-    console.log("generate winner")
     return (
       <div className='main'>
         <div className='app_info'>
@@ -243,7 +235,6 @@ export default function Home() {
   // else (if there is a winner result after query), show that result
   // else, show the option to search a winner of a tweet
   else if ((status === "unauthenticated" || status === "authenticated") && generatedWinner) {
-    console.log("generated winner result")
     return (
 
       <div className='main'>
@@ -279,7 +270,6 @@ export default function Home() {
     )
   }
   else if (status === "unauthenticated" && searchedWinner) {
-    console.log("searched winner result")
 
     return (
       <div className='main'>
@@ -316,7 +306,6 @@ export default function Home() {
     )
   }
   else if (status === "unauthenticated") {
-    console.log("search for winner")
     return (
       <div className='main'>
         <div className='app_info'>

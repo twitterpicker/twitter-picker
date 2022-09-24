@@ -25,7 +25,6 @@ async function getMostViableToken() {
         }
 
     }
-    console.log(lowest);
     return lowest;
 }
 
