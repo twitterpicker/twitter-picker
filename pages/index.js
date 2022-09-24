@@ -79,6 +79,9 @@ export default function Home() {
   // is loading from server
   const [isLoading, setIsLoading] = useState(false);
 
+  // is any input field in focus
+  const [isInputFocused, setIsInputFocused] = useState(false);
+
 
 
 
@@ -210,8 +213,18 @@ export default function Home() {
           <img className='app_logo' src='/logo.png' />
           <p className='app_name'>{APP_NAME} </p>
         </div>
-        <Profile name={session?.user?.name} profileImage={session?.user?.image} setTweetLinkError={setTweetLinkError} />
-        <input className='input' value={tweetLink} placeholder='tweet link' type="text" onChange={(event) => { setTweetLink(event.target.value) }} />
+        {
+          (isInputFocused === false) &&
+          <Profile name={session?.user?.name} profileImage={session?.user?.image} setTweetLinkError={setTweetLinkError} />
+        }
+        {
+          (isInputFocused === true) &&
+          <p>{"Enter Tweet Link To Generate a winner"}</p>
+        }
+        <input className='input' value={tweetLink} placeholder='tweet link' type="text"
+          onBlur={() => { setIsInputFocused(false) }}
+          onFocus={() => { setIsInputFocused(true) }}
+          onChange={(event) => { setTweetLink(event.target.value) }} />
         <button className='button' onClick={async () => await generateWinner(session.user.name, getTweetIDFromLink(tweetLink))}>generate winner</button>
         {tweetLinkError && <p className='tweet_link_error'>{tweetLinkError}</p>}
       </div>
@@ -274,8 +287,8 @@ export default function Home() {
             <h2>{"Winner Handle :"}
               <span className='profile-link'> {"@" + searchedWinner.tweeterHandle} </span>
             </h2>
-            <a href={"https://twitter.com/" + searchedWinner.tweeterHandle} target="_blank" rel="noopener noreferrer"> 
-            {"Visit winner profile"}
+            <a href={"https://twitter.com/" + searchedWinner.tweeterHandle} target="_blank" rel="noopener noreferrer">
+              {"Visit winner profile"}
             </a>
             <h2>{"Selected at, "}  <span>{new Date(searchedWinner.timestamp).toLocaleDateString('en-US')}</span> </h2>
           </div>
@@ -291,8 +304,18 @@ export default function Home() {
           <img className='app_logo' src='/logo.png' />
           <p className='app_name'>{APP_NAME} </p>
         </div>
-        <Profile setTweetLinkError={setTweetLinkError} />
-        <input className='input' value={queryTweetLink} placeholder='tweet link' type="text" onChange={(event) => { setQueryTweetLink(event.target.value) }} />
+        {
+          (isInputFocused === false) &&
+          <Profile setTweetLinkError={setTweetLinkError} />
+        }
+        {
+          (isInputFocused === true) &&
+          <p>{"Enter Tweet Link To search the giveaway winner."}</p>
+        }
+        <input className='input' value={queryTweetLink} placeholder='tweet link' type="text"
+          onBlur={() => { setIsInputFocused(false) }}
+          onFocus={() => { setIsInputFocused(true) }}
+          onChange={(event) => { setQueryTweetLink(event.target.value) }} />
         <button className='button' onClick={async () => { await searchWinner(getTweetIDFromLink(queryTweetLink)) }}>view winner</button>
         {tweetLinkError && <p className='tweet_link_error'>{tweetLinkError}</p>}
       </div>
