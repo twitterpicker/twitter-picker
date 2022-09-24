@@ -1,7 +1,9 @@
 import { addWinnerToDatabase } from "../database/winner";
 
+export const LIMIT = 300;
 async function pick(name, id) {
-    let retweetLimit = 300; // maximum retweets retrieval ammount
+    let retweetLimit = LIMIT; // maximum retweets retrieval ammount
+
     let apiResponse = await fetch("api/get-random-retweeter", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

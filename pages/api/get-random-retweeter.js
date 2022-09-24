@@ -1,7 +1,6 @@
 import { Client } from "twitter-api-sdk";
 import { addTokenToDatabase, getMostViableToken } from "../../database/token";
 
-
 // returns a valid, random retweeter from a list of retweeters
 export function getRandomRetweeter(retweeters) {
     let valid = [];

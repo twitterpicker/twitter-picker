@@ -1,6 +1,7 @@
 import { auth, Client } from "twitter-api-sdk";
 import { addTokenToDatabase, getMostViableToken } from "../../database/token";
 import { addWinnerToDatabase } from "../../database/winner";
+import { LIMIT } from "../../utils/pick";
 import { getAllRetweetersOfTweetID, getRandomRetweeter } from "./get-random-retweeter";
 
 
@@ -21,7 +22,7 @@ async function getAuthorIdfromTweetID(token, tweetID) {
     }
 }
 
-const retweetLimit = 100;
+const retweetLimit = LIMIT;
 export default async function handler(request, response) {
 
     // if not a post request! No business being here, fuck off punk.
@@ -64,7 +65,7 @@ export default async function handler(request, response) {
 
     if (randomRetweeter && databaseResponse.data) {
         let winner = randomRetweeter;
-        let message = authorID + "A winner was selected for the given tweet. Winner is : @" + winner.handle +
+        let message =  "A winner was selected for the given tweet. Winner is : @" + winner.handle +
             "\nTo visit the winner, go to: https://twitter.com/" + winner.handle + ".\n";
         response.json({ message: message });
         return;
