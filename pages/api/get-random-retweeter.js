@@ -102,8 +102,8 @@ export default async function handler(request, response) {
     let isVerified = authorName && requesterName && (authorName === requesterName);
 
     // if not verified (set to true while testing, else false)
-    if (isVerified === true) {
-        response.status(400).json({ method: request.body, error_message: 'unauthorized user credential', data: null });
+    if (isVerified === false) {
+        response.json({ error_message: "The specified tweet was not posted by you. Can't pick winner"});
         return;
     }
 
@@ -120,7 +120,7 @@ export default async function handler(request, response) {
             tweetID,
             requesterName,
         },
-        retweeters: retweeters, // return only for testing purposes (otherwise, chance of api abuse/ longer time for response)
+        // retweeters: retweeters, // return only for testing purposes (otherwise, chance of api abuse/ longer time for response)
         randomRetweeter: randomRetweeter,
         info: {
             numOfDocuments,

@@ -127,18 +127,26 @@ export default function Home() {
       // start loading
       setIsLoading(true);
       // try fetching retweeters of ${id}, by ${name} with retrieved token 
-      const result = await pick(name, id)
+      console.log(1);
+      const winner = await pick(name, id);
+      setGeneratedWinner(winner);
       // if winner is generated, signout
-      if (result) signOut({ redirect: false });
+      if (winner.isWinner) signOut({ redirect: false });
       // set winner to be generated
-      setGeneratedWinner(result);
+
+
       // stop loading
       setIsLoading(false);
     }
     // there was an error
     catch (err) {
+      console.log(err);
     }
   }
+
+  useEffect(() => {
+    console.log(generatedWinner);
+  }, [generatedWinner]);
 
 
   async function searchWinner(tweetID) {
@@ -149,10 +157,10 @@ export default function Home() {
     setIsLoading(true);
     let response = await getWinnerFromDatabase(tweetID);
     if (response.data && response.data.length !== 0) {
-      setSearchedWinner({ ...response.data[0], noWinner: false });
+      setSearchedWinner({ ...response.data[0], isWinner: true });
     }
     else {
-      setSearchedWinner({ noWinner: true })
+      setSearchedWinner({ isWinner: false })
     }
     // stop loading
     setIsLoading(false);
@@ -210,7 +218,7 @@ export default function Home() {
     return (
       <div className='main'>
         <div className='app_info'>
-          <img className='app_logo' src={isInputFocused ? '/back.png' : '/logo.png'} />
+          <img className='app_logo' src={isInputFocused ? '/back.png' : '/logo.png'} onClick={() => { setIsInputFocused(false) }} />
           <p className='app_name'>{APP_NAME} </p>
         </div>
         {
@@ -222,12 +230,11 @@ export default function Home() {
           <p>{"Enter Tweet Link To Generate a winner"}</p>
         }
         <input className='input' value={tweetLink} placeholder='tweet link' type="text"
-          onBlur={() => { setIsInputFocused(false) }}
           onFocus={() => { setIsInputFocused(true) }}
           onChange={(event) => { setTweetLink(event.target.value) }} />
         <button className='button' onClick={async () => await generateWinner(session.user.name, getTweetIDFromLink(tweetLink))}>generate winner</button>
         {tweetLinkError && <p className='tweet_link_error'>{tweetLinkError}</p>}
-      </div>
+      </div >
     )
   }
 
@@ -235,25 +242,37 @@ export default function Home() {
   // (if there is a winner generated), show that result
   // else (if there is a winner result after query), show that result
   // else, show the option to search a winner of a tweet
-  else if (status === "unauthenticated" && generatedWinner) {
+  else if ((status === "unauthenticated" || status === "authenticated") && generatedWinner) {
     console.log("generated winner result")
     return (
 
       <div className='main'>
         <div className='app_info'>
-          <img className='app_logo' src='/back.png' onClick={() => { setGeneratedWinner(null) }} />
+          <img className='app_logo' src='/back.png' onClick={() => { setGeneratedWinner(null); setIsInputFocused(false) }} />
           <p className='app_name'>{APP_NAME} </p>
         </div>
         {
-          (generatedWinner.data === null) &&
-          <div>
-            no winner found
+          (!generatedWinner.isWinner) &&
+          <div className='query_unsuccessful'>
+            <h2>
+              {generatedWinner.error || "Sorry! no winner could be picked for the given tweet . . ."}
+            </h2>
           </div>
         }
         {
-          (generatedWinner.data !== null) &&
-          <div>
-            {JSON.stringify(generatedWinner)}
+          (generatedWinner.isWinner) &&
+          <div className='winner'>
+            <h2>{"GiveAway tweet :"}</h2>
+            <a href={"https://twitter.com/user/status/" + generatedWinner.tweetID} target="_blank" rel="noopener noreferrer">
+              {"https://twitter.com/user/status/" + generatedWinner.tweetID}
+            </a>
+            <h2>{"Winner Handle :"}
+              <span className='profile-link'> {"@" + generatedWinner.tweeterHandle} </span>
+            </h2>
+            <a href={"https://twitter.com/" + generatedWinner.tweeterHandle} target="_blank" rel="noopener noreferrer">
+              {"Visit winner profile"}
+            </a>
+            <h2>{"Selected at, "}  <span>{new Date(generatedWinner.timestamp).toLocaleDateString('en-US')}</span> </h2>
           </div>
         }
       </div>
@@ -265,12 +284,12 @@ export default function Home() {
     return (
       <div className='main'>
         <div className='app_info'>
-          <img className='app_logo' src='/back.png' onClick={() => { setSearchedWinner(null) }} />
+          <img className='app_logo' src='/back.png' onClick={() => { setSearchedWinner(null); setIsInputFocused(false) }} />
           <p className='app_name'>{APP_NAME} </p>
         </div>
 
         {
-          (searchedWinner.noWinner) &&
+          (!searchedWinner.isWinner) &&
           <div className='query_unsuccessful'>
             <h1>
               {"Sorry! no winner found for the given tweet . . ."}
@@ -278,7 +297,7 @@ export default function Home() {
           </div>
         }
         {
-          (!searchedWinner.noWinner) &&
+          (searchedWinner.isWinner) &&
           <div className='winner'>
             <h2>{"GiveAway tweet :"}</h2>
             <a href={"https://twitter.com/user/status/" + searchedWinner.tweetID} target="_blank" rel="noopener noreferrer">
@@ -301,7 +320,7 @@ export default function Home() {
     return (
       <div className='main'>
         <div className='app_info'>
-          <img className='app_logo' src={isInputFocused ? '/back.png' : '/logo.png'} />
+          <img className='app_logo' src={isInputFocused ? '/back.png' : '/logo.png'} onClick={() => { setIsInputFocused(false) }} />
           <p className='app_name'>{APP_NAME} </p>
         </div>
         {
@@ -313,7 +332,6 @@ export default function Home() {
           <p>{"Enter Tweet Link To search the giveaway winner."}</p>
         }
         <input className='input' value={queryTweetLink} placeholder='tweet link' type="text"
-          onBlur={() => { setIsInputFocused(false) }}
           onFocus={() => { setIsInputFocused(true) }}
           onChange={(event) => { setQueryTweetLink(event.target.value) }} />
         <button className='button' onClick={async () => { await searchWinner(getTweetIDFromLink(queryTweetLink)) }}>view winner</button>
