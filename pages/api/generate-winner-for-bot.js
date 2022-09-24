@@ -52,7 +52,7 @@ export default async function handler(request, response) {
 
     if (randomRetweeter) {
         let winner = randomRetweeter;
-        let message = "The winner for the given tweet giveaway is : @" + winner.handle +
+        let message = "A winner was selected for the given tweet. Winner is : @" + winner.handle +
             "\nTo visit the winner, go to: https://twitter.com/" + winner.handle + ".\n";
         response.json({ message: message });
         return;
