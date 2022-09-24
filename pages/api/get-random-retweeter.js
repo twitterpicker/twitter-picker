@@ -3,7 +3,7 @@ import { addTokenToDatabase, getMostViableToken } from "../../database/token";
 
 
 // returns a valid, random retweeter from a list of retweeters
-function getRandomRetweeter(retweeters) {
+export function getRandomRetweeter(retweeters) {
     let valid = [];
     let randomRetweeter = null;
     for (let i = 0; i < retweeters?.length; i++) {
@@ -15,12 +15,12 @@ function getRandomRetweeter(retweeters) {
 
         }
     }
-    randomRetweeter = valid[Math.floor(Math.random() * valid.length)];
+    if (valid.length !== 0) randomRetweeter = valid[Math.floor(Math.random() * valid.length)];
     return randomRetweeter;
 }
 
 // returns all the 1. retweeters 2. number of requests it took 3. num of documents it retrieved
-async function getAllRetweetersOfTweetID(token, tweetID, retweetLimit) {
+export async function getAllRetweetersOfTweetID(token, tweetID, retweetLimit) {
 
     let data = [];
     let numOfRequests = 0;
@@ -103,7 +103,7 @@ export default async function handler(request, response) {
 
     // if not verified (set to true while testing, else false)
     if (isVerified === false) {
-        response.json({ error_message: "The specified tweet was not posted by you. Can't pick winner"});
+        response.json({ error_message: "The specified tweet was not posted by you. Can't pick winner" });
         return;
     }
 
