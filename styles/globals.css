@@ -50,9 +50,8 @@ body,
     color: #dbdbdb;
   }
 }
+/* end */
 
-
-/* start animation */
 .start_animation_container {
   height: 100%;
   display: flex;
@@ -88,7 +87,6 @@ body,
   animation-timing-function: ease-in-out;
 }
 
-/* profile */
 
 .profile_card {
   display: flex;
@@ -131,7 +129,6 @@ body,
   margin-right: auto;
 }
 
-/* main container of elements */
 .main {
 
   width: 100%;
@@ -142,7 +139,6 @@ body,
   align-items: center;
 }
 
-/* input */
 
 .input {
   width: 80%;
@@ -162,7 +158,6 @@ body,
   font-size: large;
 }
 
-/* button */
 
 .button {
   all: unset;
@@ -180,7 +175,6 @@ body,
 
 }
 
-/* app info */
 .app_info {
   width: 100%;
   display: flex;

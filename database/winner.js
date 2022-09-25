@@ -1,5 +1,6 @@
 import { supabase } from "./client";
 
+// adds/updates a winner to database (used after generating winner)
 async function addWinnerToDatabase(tweetID, tweeterHandle, winnerID, timestamp) {
     const response = await supabase.from('winners').upsert([{
         tweetID: tweetID,
@@ -11,7 +12,7 @@ async function addWinnerToDatabase(tweetID, tweeterHandle, winnerID, timestamp) 
 }
 
 
-// retrieve winner
+// retrieves winner from the database (used for searching/viewing winner)
 async function getWinnerFromDatabase(tweetID) {
     const response = await supabase
         .from('winners')
