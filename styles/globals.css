@@ -218,6 +218,7 @@ body,
 
 .winner {
   margin: auto;
+  margin-bottom: 20px;
   margin-top: 25px;
   width: 90%;
   max-width: 90%;

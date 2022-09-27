@@ -15,6 +15,14 @@ const START_ANIMATION_DURATION = 3;
 // app name
 const APP_NAME = "picker";
 
+// util : https://meyerweb.com/eric/tools/dencoder/
+const composeTweetLink = (tweetID, winnerHandle) => {
+  let text = `The%20giveaway%20was%20for%20the%20tweeet%20%3A%20https%3A%2F%2Ftwitter.com%2Fuser%2Fstatus%2F${tweetID}%0AThe%20winner%20was%20%40${winnerHandle}%0AVisit%20the%20winner%20at%20https%3A%2F%2Ftwitter.com%2F${winnerHandle}`;
+  let link = `https://twitter.com/intent/tweet?original_referer=picker.com&source=tweetbutton&text=${text}`;
+  return link;
+
+}
+
 
 // a profile component, that returns a profile card
 function Profile({
@@ -282,20 +290,29 @@ export default function Home() {
         }
         {
           (generatedWinner.isWinner) &&
-          <div className='winner'>
-            <h2>{"GiveAway tweet :"}</h2>
-            <a href={"https://twitter.com/user/status/" + generatedWinner.tweetID} target="_blank" rel="noopener noreferrer">
-              {"https://twitter.com/user/status/" + generatedWinner.tweetID}
-            </a>
-            <h2>{"Winner Handle :"}
-              <span className='profile-link'> {"@" + generatedWinner.tweeterHandle} </span>
-            </h2>
-            <a href={"https://twitter.com/" + generatedWinner.tweeterHandle} target="_blank" rel="noopener noreferrer">
-              {"Visit winner profile"}
-            </a>
-            <h2>{"Selected at, "}  <span>{new Date(generatedWinner.timestamp).toLocaleDateString('en-US')}</span> </h2>
-          </div>
+          <>
+            <div className='winner'>
+              <h2>{"GiveAway tweet :"}</h2>
+              <a href={"https://twitter.com/user/status/" + generatedWinner.tweetID} target="_blank" rel="noopener noreferrer">
+                {"https://twitter.com/user/status/" + generatedWinner.tweetID}
+              </a>
+              <h2>{"Winner Handle :"}
+                <span className='profile-link'> {"@" + generatedWinner.tweeterHandle} </span>
+              </h2>
+              <a href={"https://twitter.com/" + generatedWinner.tweeterHandle} target="_blank" rel="noopener noreferrer">
+                {"Visit winner profile"}
+              </a>
+              <h2>{"Selected at, "}  <span>{new Date(generatedWinner.timestamp).toLocaleDateString('en-US')}</span> </h2>
+            </div>
+
+            <div>
+              <a href={composeTweetLink(generatedWinner.tweetID, generatedWinner.tweeterHandle)} className="button" target="_blank" rel="noopener noreferrer">
+                tweet result
+              </a>
+            </div>
+          </>
         }
+
       </div>
     )
   }
