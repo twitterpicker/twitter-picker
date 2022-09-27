@@ -100,7 +100,7 @@ export default async function handler(request, response) {
     // if we generated and saved the winner
     if (randomRetweeter && databaseResponse.data) {
         let winner = randomRetweeter;
-        let message = retweetCount + " retweets loaded."
+        let message = retweetCount + " retweets loaded." + 
             "\nA winner was selected for the given tweet. Winner is : @" + winner.handle +
             "\nTo visit the winner, go to: https://twitter.com/" + winner.handle + "." +
             "\nTo tweet about the result, use: " + composeTweetLink(tweetID, winner.handle) + ".\n";
