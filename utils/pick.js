@@ -22,6 +22,7 @@ async function pick(name, id) {
     });
     let apiJsonResponse = await apiResponse.json();
     let randomRetweeter = apiJsonResponse.randomRetweeter;
+    let retweetCount = apiJsonResponse.retweetCount;
 
     // if there is no random retweeter
     if (!randomRetweeter) {
@@ -43,6 +44,7 @@ async function pick(name, id) {
         winnerID: winnerID,
         tweeterHandle: randomRetweeter.handle,
         timestamp: timestamp,
+        retweetCount: retweetCount,
         isWinner: true,
     };
     // if winner couldn't be saved, return noWinner with error response

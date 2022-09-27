@@ -54,7 +54,7 @@ export async function getAllRetweetersOfTweetID(token, tweetID, retweetLimit) {
     }
 }
 // returns the name of the author for a given tweetID
-async function getAuthorNamefromTweetID(token, tweetID) {
+async function getMetaDatafromTweetID(token, tweetID) {
     try {
         const client = new Client(token);
         const lookupTweetById = await client.tweets.findTweetById(
@@ -62,9 +62,16 @@ async function getAuthorNamefromTweetID(token, tweetID) {
             {
                 expansions: ["author_id"],
                 "user.fields": ["name"],
+                "tweet.fields": ["public_metrics"]
             }
         );
-        return lookupTweetById?.includes?.users[0]?.name;
+        console.log(JSON.stringify(lookupTweetById));
+        let authorName = lookupTweetById?.includes?.users[0]?.name;
+        let retweetCount = lookupTweetById?.data?.public_metrics?.retweet_count;
+        return {
+            authorName,
+            retweetCount,
+        }
     }
     catch (error) {
         return null;
@@ -90,8 +97,14 @@ export default async function handler(request, response) {
 
 
     let authorName = null;
+    let retweetCount = 0;
     // get author name of the given tweetID if there is a viable token
-    if (twitterToken?.token) authorName = await getAuthorNamefromTweetID(twitterToken.token, tweetID);
+    if (twitterToken?.token) 
+    {
+        const metaData =  await getMetaDatafromTweetID(twitterToken.token, tweetID);
+        authorName = metaData.authorName;
+        retweetCount = metaData.retweetCount;
+    }
 
 
     // if tweet has a author, a requester and they are the same
@@ -122,6 +135,7 @@ export default async function handler(request, response) {
         },
         // retweeters: retweeters, // return only for testing purposes (otherwise, chance of api abuse/ longer time for response)
         randomRetweeter: randomRetweeter,
+        retweetCount,
     })
 }
 

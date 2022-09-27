@@ -6,7 +6,7 @@ import { getAllRetweetersOfTweetID, getRandomRetweeter } from "./get-random-retw
 
 
 // it returns a tweetID for a given tweet, using a bearer token
-async function getAuthorIdfromTweetID(token, tweetID) {
+async function getMetaDatafromTweetID(token, tweetID) {
     try {
         const client = new Client(token);
         const lookupTweetById = await client.tweets.findTweetById(
@@ -14,9 +14,16 @@ async function getAuthorIdfromTweetID(token, tweetID) {
             {
                 expansions: ["author_id"],
                 "user.fields": ["name"],
+                "tweet.fields": ["public_metrics"]
             }
         );
-        return lookupTweetById?.includes?.users[0]?.id;
+        let authorID = lookupTweetById?.includes?.users[0]?.id;
+        let retweetCount = lookupTweetById?.data?.public_metrics?.retweet_count;
+
+        return {
+            authorID,
+            retweetCount,
+        }
     }
     catch (error) {
         return null;
@@ -58,7 +65,16 @@ export default async function handler(request, response) {
     let twitterToken = await getMostViableToken();
 
     // gets the author for a given tweet
-    let authorID = await getAuthorIdfromTweetID(twitterToken.token, tweetID);
+    let authorID = null;
+    let retweetCount = 0;
+
+    if (twitterToken?.token) 
+    {
+        const metaData =  await getMetaDatafromTweetID(twitterToken.token, tweetID);
+        authorID = metaData.authorID;
+        retweetCount = metaData.retweetCount;
+    }
+
 
     // if there is an author, there is a requester, and they both are the same!
     let isVerified = authorID && requesterID && (authorID === requesterID);
@@ -84,7 +100,8 @@ export default async function handler(request, response) {
     // if we generated and saved the winner
     if (randomRetweeter && databaseResponse.data) {
         let winner = randomRetweeter;
-        let message = "A winner was selected for the given tweet. Winner is : @" + winner.handle +
+        let message = retweetCount + " retweets loaded."
+            "\nA winner was selected for the given tweet. Winner is : @" + winner.handle +
             "\nTo visit the winner, go to: https://twitter.com/" + winner.handle + "." +
             "\nTo tweet about the result, use: " + composeTweetLink(tweetID, winner.handle) + ".\n";
         response.json({ message: message });

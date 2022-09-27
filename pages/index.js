@@ -303,6 +303,7 @@ export default function Home() {
                 {"Visit winner profile"}
               </a>
               <h2>{"Selected at, "}  <span>{new Date(generatedWinner.timestamp).toLocaleDateString('en-US')}</span> </h2>
+              <h3>{"Loaded "} {generatedWinner.retweetCount} {(generatedWinner.retweetCount > 1) ? "retweets." : "retweet."} </h3>
             </div>
 
             <div>
