@@ -118,7 +118,7 @@ export default function Home() {
       setTweetLinkError(null);
       let splitted = statusLink.split("/");
       for (let i = 0; i < splitted.length; i++) {
-        if (splitted[i] === "status" || splitted[i] === "statuses") tweetId = splitted[i + 1];
+        if (splitted[i] === "status" || splitted[i] === "statuses") tweetId = splitted[i + 1].split("?")[0];
       }
     }
     else {
