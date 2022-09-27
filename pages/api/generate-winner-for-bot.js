@@ -25,12 +25,21 @@ async function getAuthorIdfromTweetID(token, tweetID) {
 // the max-number of retweeters that will be returned
 const retweetLimit = LIMIT;
 
+
+// util : https://meyerweb.com/eric/tools/dencoder/
+const composeTweetLink = (tweetID, winnerHandle) => {
+    let text = `The%20giveaway%20was%20for%20the%20tweeet%20%3A%20https%3A%2F%2Ftwitter.com%2Fuser%2Fstatus%2F${tweetID}%0AThe%20winner%20was%20%40${winnerHandle}%0AVisit%20the%20winner%20at%20https%3A%2F%2Ftwitter.com%2F${winnerHandle}`;
+    let link = `https://twitter.com/intent/tweet?original_referer=picker.com&source=tweetbutton&text=${text}`;
+    return link;
+
+}
+
 // handles /api/generate-winner-for-bot endpoint
 export default async function handler(request, response) {
 
     // if not a post request! No business being here!
     if (request.method !== 'POST') {
-        response.status(405).json({ error_message: 'Only POST requests allowed'});
+        response.status(405).json({ error_message: 'Only POST requests allowed' });
         return;
     }
 
@@ -55,8 +64,7 @@ export default async function handler(request, response) {
     let isVerified = authorID && requesterID && (authorID === requesterID);
 
     // if not verified, return unauthenticated response
-    if(!isVerified)
-    {
+    if (!isVerified) {
         response.json({ message: "The given tweet was not authored by you. Can't select winner!" });
         return;
     }
@@ -76,8 +84,9 @@ export default async function handler(request, response) {
     // if we generated and saved the winner
     if (randomRetweeter && databaseResponse.data) {
         let winner = randomRetweeter;
-        let message =  "A winner was selected for the given tweet. Winner is : @" + winner.handle +
-            "\nTo visit the winner, go to: https://twitter.com/" + winner.handle + ".\n";
+        let message = "A winner was selected for the given tweet. Winner is : @" + winner.handle +
+            "\nTo visit the winner, go to: https://twitter.com/" + winner.handle + "." +
+            "\nTo tweet about the result, use: " + composeTweetLink(tweetID, winner.handle) + ".\n";
         response.json({ message: message });
         return;
     }
