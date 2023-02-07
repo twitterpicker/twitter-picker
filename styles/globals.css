@@ -1,249 +1,287 @@
-@import url('https://fonts.googleapis.com/css2?family=Dangrek&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
 
-
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  font-family: 'Dangrek', cursive;
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  scrollbar-width: none;
-  color: #dbdbdb;
-  /* Firefox */
-}
-
-*::-webkit-scrollbar {
-  display: none;
-}
-
-
-
-html,
-body,
-#__next,
-#__next>div {
-  height: 100%;
-  background-color: #1D1D1F;
-}
-
-
-/* keyframes of animations */
-@keyframes fadeEffectStartAnimation {
-  from {
-    background-color: #ffffff;
-    color: black;
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 
-  to {
-    background-color: #1D1D1F;
-    color: #dbdbdb;
-  }
-}
-
-@keyframes fadeEffectStartAnimationAppName {
-  from {
-    color: black;
+  *::-webkit-scrollbar {
+    display: none;
   }
 
-  to {
-    color: #dbdbdb;
+
+
+  html,
+  body,
+  #__next,
+  #__next>div {
+    height: 100%;
   }
-}
-/* end */
-
-.start_animation_container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  animation-name: fadeEffectStartAnimation;
-  animation-duration: 2s;
-  animation-timing-function: ease-in-out;
-}
-
-.start_animation_app_info {
-  height: 25vw;
-  aspect-ratio: 1;
-}
-
-.start_animation_app_logo {
-  height: 100%;
-  aspect-ratio: 1;
-  padding: 20px;
-  border-radius: 50%;
-  box-shadow:
-    12px 12px 16px 0 rgba(0, 0, 0, 0.25),
-    -2px -2px 2px 0 rgba(255, 255, 255, 0.3);
-}
-
-.start_animation_app_name {
-  font-family: 'Dangrek', cursive;
-  color: #dbdbdb;
-  font-size: xx-large;
-  animation-name: fadeEffectStartAnimationAppName;
-  animation-duration: 2s;
-  animation-timing-function: ease-in-out;
-}
 
 
-.profile_card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  width: max-content;
-  height: max-content;
-  max-width: 90%;
-  min-width: 50%;
-  margin-top: 40px;
-  padding: 10px;
-  border-radius: 20px;
-  height: 40%;
-  box-shadow:
-    12px 12px 16px 0 #00000040,
-    -2px -2px 2px 0 #ffffff1a;
-  flex-direction: column;
-  color: whitesmoke;
-}
+  /* keyframes of animations */
+  @keyframes fadeEffectStartAnimation {
+    from {
+      background-color: black;
+      color: white;
+    }
 
-.profile_image {
-  height: 50%;
-  aspect-ratio: 1;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 10px;
-  border-radius: 50%;
-  box-shadow:
-    12px 12px 16px 0 #00000040,
-    -2px -2px 2px 0 #ffffff1a;
-}
+    to {
+      background-color: #f0f0f0;
+      color: black;
+    }
+  }
 
-.profile_name {
-  font-family: 'Dangrek', cursive;
-  font-size: larger;
-  color: #dbdbdb;
-  width: max-content;
-  margin-left: auto;
-  margin-right: auto;
-}
+  @keyframes fadeEffectStartAnimationAppName {
+    from {
+      color: #dbdbdb;
+    }
 
-.main {
+    to {
+      color: black;
+    }
+  }
 
-  width: 100%;
-  height: 100%;
-  background-color: black;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  /* end */
 
+  .start_animation_container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation-name: fadeEffectStartAnimation;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+  }
 
-.input {
-  width: 80%;
-  margin: 40px;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 20px;
-  border: none;
-  outline: none;
-  border-radius: 20px;
-  background-color: #1D1D1F;
-  color: #dbdbdb;
-  box-shadow: inset 8px 8px 16px 0 #00000066,
-    inset -2px -2px 6px 0 #ffffff1a;
-  /* font-family: 'Dangrek', cursive; */
-  font-size: large;
-}
+  .start_animation_app_info {
+    height: 25vw;
+    aspect-ratio: 1;
+  }
 
-
-.button {
-  all: unset;
-  cursor: pointer;
-  font-family: 'Dangrek', cursive;
-  font-size: small;
-  background-color: #1D1D1F;
-  padding: 10px;
-  padding-bottom: 5px;
-  color: #dbdbdb;
-  border-radius: 10px;
-  box-shadow:
-    6px 6px 8px 0 #00000040,
-    -2px -2px 2px 0 #ffffff1a;
-
-}
-
-.app_info {
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.app_logo {
-  margin: 10px;
-  height: 55px;
-  aspect-ratio: 1;
-  padding: 5px;
-  border-radius: 50%;
-  box-shadow:
-    12px 12px 16px 0 rgba(0, 0, 0, 0.25),
-    -2px -2px 2px 0 rgba(255, 255, 255, 0.3);
-  cursor: pointer;
-}
-
-.app_name {
-  font-family: 'Dangrek', cursive;
-  color: #dbdbdb;
-  font-size: xx-large;
-}
-
-.tweet_link_error {
-  margin-top: 15px;
-  font-family: 'Dangrek', cursive;
-  color: #ff3737a0;
-  font-size: xx-large;
-}
-
-.query_unsuccessful {
-  margin: auto;
-  width: 90%;
-  max-width: 90%;
-  font-family: 'Dangrek', cursive;
-  color: #ff3737a0;
-  text-align: center;
-  font-size: large;
-}
-
-.winner {
-  margin: auto;
-  margin-bottom: 20px;
-  margin-top: 25px;
-  width: 90%;
-  max-width: 90%;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow:
-    12px 12px 16px 0 #00000040,
-    -2px -2px 2px 0 #ffffff1a;
-
-  word-break: break-all;
-  color: #dbdbdb;
-  font-size: large;
-}
-
-.winner a{
-  color: #dbdbdb80;
-}
-
-/* on larger screens */
-
-@media screen and (min-width: 768px) {
-  .button {
-    font-size: larger;
+  .start_animation_app_logo {
+    height: 100%;
+    aspect-ratio: 1;
+    padding: 20px;
+    border-radius: 50%;
     box-shadow:
-      12px 12px 16px 0 #00000040,
-      -2px -2px 2px 0 #ffffff1a;
+      12px 12px 16px 0 rgba(0, 0, 0, 0.25),
+      -2px -2px 2px 0 rgba(255, 255, 255, 0.3);
   }
-}
+
+  .start_animation_app_name {
+    font-family: 'Inter', sans-serif;
+    color: black;
+    font-size: xx-large;
+    animation-name: fadeEffectStartAnimationAppName;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+  }
+
+
+  .profile_card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: max-content;
+    height: max-content;
+    max-width: 90%;
+    min-width: 50%;
+    margin-top: 40px;
+    padding: 10px;
+    border-radius: 20px;
+    height: 40%;
+    flex-direction: column;
+    color: whitesmoke;
+  }
+
+  .profile_image {
+    height: 50%;
+    aspect-ratio: 1;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    border-radius: 50%;
+  }
+
+  .profile_name {
+    font-family: 'Inter', sans-serif;
+    font-size: larger;
+    color: #dbdbdb;
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .main {
+
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-container {
+    display: flex;
+    align-items: center;
+    height: max-content;
+    width: 100%;
+  }
+
+  .search_logo {
+    position: fixed;
+    justify-content: center;
+    height: 50px;
+    aspect-ratio: 1;
+    padding: 5px;
+    cursor: pointer;
+    left: calc(80%);
+
+  }
+
+  .input {
+
+    margin: auto;
+    width: 80%;
+    padding: 20px;
+    border: none;
+    outline: none;
+    border-radius: 20px;
+    background-color: white;
+    color: black;
+    /* font-family: 'Inter', sans-serif; */
+    font-size: large;
+    /* border: 2px solid black; */
+
+    box-shadow:
+      2px 2px 4px 0 #4f4e4e,
+      -2px -2px 4px 0 #4f4e4e;
+  }
+
+
+  .button {
+    all: unset;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    background-color: #699cfc;
+    padding: 20px;
+    margin-top: 40px;
+    color: white;
+    border-radius: 20px;
+    font-size: larger;
+  }
+
+  .app_info {
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .prompt {
+    color: #8a90a6;
+    text-align: center;
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+  }
+
+  .app_logo {
+    margin: 10px;
+    height: 55px;
+    aspect-ratio: 1;
+    padding: 5px;
+    border-radius: 50%;
+    box-shadow:
+      12px 12px 16px 0 rgba(0, 0, 0, 0.25),
+      -2px -2px 2px 0 rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+  }
+
+  .app_name {
+    font-family: 'Inter', sans-serif;
+    color: #5281ce;
+    font-size: xx-large;
+    font-weight: bold;
+  }
+
+  .tweet_link_error {
+    margin-top: 40px;
+    font-family: 'Inter', sans-serif;
+    color: #a04246;
+    font-size: large;
+  }
+
+  .query_unsuccessful {
+    margin: auto;
+    width: 90%;
+    max-width: 90%;
+    font-family: 'Inter', sans-serif;
+    color: #a04246;
+    text-align: center;
+    font-size: large;
+    transform: translateY(-10vh);
+  }
+
+  .winner-title {
+    margin-top: 20vh;
+    color: #3d6581;
+
+  }
+  .giveaway-tweet {
+    color: #3d6581;
+  }
+
+  .winner {
+    border: 1px solid black;
+    margin: auto;
+    margin-bottom: 20px;
+    margin-top: 25px;
+    width: 90%;
+    max-width: 90%;
+    padding: 10px;
+    border-radius: 10px;
+    word-wrap: break-word;
+    color: #3d6581;
+    font-size: large;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .winner a {
+    color: #a04246;
+  }
+
+  /* on larger screens */
+
+  @media screen and (min-width: 768px) {
+    .button {}
+
+    .prompt {
+      margin: unset;
+      margin-top: 20vh;
+      margin-bottom: 5vh;
+    }
+
+
+    .input {
+      width: 45vw;
+    }
+
+    .search_logo {
+      left: calc(72.5% - 70px);
+    }
+    .winner {
+      width: max-content;
+      padding: 30px;
+    }
+  }

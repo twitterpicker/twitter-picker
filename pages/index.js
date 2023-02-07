@@ -13,7 +13,7 @@ const APP_STATE =
 const START_ANIMATION_DURATION = 3;
 
 // app name
-const APP_NAME = "picker";
+const APP_NAME = "Picker";
 
 // util : https://meyerweb.com/eric/tools/dencoder/
 const composeTweetLink = (tweetID, winnerHandle) => {
@@ -229,7 +229,7 @@ export default function Home() {
     )
   }
   // if app is in loading state, (i.e: fetching data, or changing auth status!)
-  else if (isLoading || status === "loading") {
+  if (isLoading || status === "loading") {
     return (
       <div className='start_animation_container'>
         <div className='start_animation_app_info'>
@@ -240,83 +240,83 @@ export default function Home() {
     )
   }
 
-  // if user is authenticated, but there is no winner generated yet,
-  // show option for inputing tweetLink to generate winner
-  else if (status === "authenticated" && !generatedWinner) {
-    return (
-      <div className='main'>
-        <div className='app_info'>
-          <img className='app_logo' src={isInputFocused ? '/back.png' : '/logo.png'} onClick={() => { setIsInputFocused(false) }} />
-          <p className='app_name'>{APP_NAME} </p>
-        </div>
-        {
-          // don't show profile card if input is fouced
-          (isInputFocused === false) &&
-          <Profile name={session?.user?.name} profileImage={session?.user?.image} setTweetLinkError={setTweetLinkError} />
-        }
-        {
-          (isInputFocused === true) &&
-          <p>{"Enter Tweet Link To Generate a winner"}</p>
-        }
-        <input className='input' value={tweetLink} placeholder='tweet link' type="text"
-          onFocus={() => { setIsInputFocused(true) }}
-          onChange={(event) => { setTweetLink(event.target.value) }} />
-        <button className='button' onClick={async () => await generateWinner(session.user.name, getTweetIDFromLink(tweetLink))}>generate winner</button>
-        {tweetLinkError && <p className='tweet_link_error'>{tweetLinkError}</p>}
-      </div >
-    )
-  }
+  // // if user is authenticated, but there is no winner generated yet,
+  // // show option for inputing tweetLink to generate winner
+  // else if (status === "authenticated" && !generatedWinner) {
+  //   return (
+  //     <div className='main'>
+  //       <div className='app_info'>
+  //         <img className='app_logo' src={isInputFocused ? '/back.png' : '/logo.png'} onClick={() => { setIsInputFocused(false) }} />
+  //         <p className='app_name'>{APP_NAME} </p>
+  //       </div>
+  //       {
+  //         // don't show profile card if input is fouced
+  //         (isInputFocused === false) &&
+  //         <Profile name={session?.user?.name} profileImage={session?.user?.image} setTweetLinkError={setTweetLinkError} />
+  //       }
+  //       {
+  //         (isInputFocused === true) &&
+  //         <p>{"Enter Tweet Link To Generate a winner"}</p>
+  //       }
+  //       <input className='input' value={tweetLink} placeholder='tweet link' type="text"
+  //         onFocus={() => { setIsInputFocused(true) }}
+  //         onChange={(event) => { setTweetLink(event.target.value) }} />
+  //       <button className='button' onClick={async () => await generateWinner(session.user.name, getTweetIDFromLink(tweetLink))}>generate winner</button>
+  //       {tweetLinkError && <p className='tweet_link_error'>{tweetLinkError}</p>}
+  //     </div >
+  //   )
+  // }
 
 
   // if user is authenticated, but generatedWinner {} is not a winner
   // or, if the user is unauthenticated, and there is a generated winner
 
-  // shows error for first case, shows result for second case
-  else if ((status === "unauthenticated" || status === "authenticated") && generatedWinner) {
-    return (
+  // // shows error for first case, shows result for second case
+  // else if ((status === "unauthenticated" || status === "authenticated") && generatedWinner) {
+  //   return (
 
-      <div className='main'>
-        <div className='app_info'>
-          <img className='app_logo' src='/back.png' onClick={() => { setGeneratedWinner(null); setIsInputFocused(false) }} />
-          <p className='app_name'>{APP_NAME} </p>
-        </div>
-        {
-          (!generatedWinner.isWinner) &&
-          <div className='query_unsuccessful'>
-            <h2>
-              {generatedWinner.error || "Sorry! no winner could be picked for the given tweet . . ."}
-            </h2>
-          </div>
-        }
-        {
-          (generatedWinner.isWinner) &&
-          <>
-            <div className='winner'>
-              <h2>{"GiveAway tweet :"}</h2>
-              <a href={"https://twitter.com/user/status/" + generatedWinner.tweetID} target="_blank" rel="noopener noreferrer">
-                {"https://twitter.com/user/status/" + generatedWinner.tweetID}
-              </a>
-              <h2>{"Winner Handle :"}
-                <span className='profile-link'> {"@" + generatedWinner.tweeterHandle} </span>
-              </h2>
-              <a href={"https://twitter.com/" + generatedWinner.tweeterHandle} target="_blank" rel="noopener noreferrer">
-                {"Visit winner profile"}
-              </a>
-              <h2>{"Selected at, "}  <span>{new Date(generatedWinner.timestamp).toLocaleDateString('en-US')}</span> </h2>
-              <h3>{"Loaded "} {generatedWinner.retweetCount} {(generatedWinner.retweetCount > 1) ? "retweets." : "retweet."} </h3>
-            </div>
+  //     <div className='main'>
+  //       <div className='app_info'>
+  //         <img className='app_logo' src='/back.png' onClick={() => { setGeneratedWinner(null); setIsInputFocused(false) }} />
+  //         <p className='app_name'>{APP_NAME} </p>
+  //       </div>
+  //       {
+  //         (!generatedWinner.isWinner) &&
+  //         <div className='query_unsuccessful'>
+  //           <h2>
+  //             {generatedWinner.error || "Sorry! no winner could be picked for the given tweet . . ."}
+  //           </h2>
+  //         </div>
+  //       }
+  //       {
+  //         (generatedWinner.isWinner) &&
+  //         <>
+  //           <div className='winner'>
+  //             <h2>{"GiveAway tweet :"}</h2>
+  //             <a href={"https://twitter.com/user/status/" + generatedWinner.tweetID} target="_blank" rel="noopener noreferrer">
+  //               {"https://twitter.com/user/status/" + generatedWinner.tweetID}
+  //             </a>
+  //             <h2>{"Winner Handle :"}
+  //               <span className='profile-link'> {"@" + generatedWinner.tweeterHandle} </span>
+  //             </h2>
+  //             <a href={"https://twitter.com/" + generatedWinner.tweeterHandle} target="_blank" rel="noopener noreferrer">
+  //               {"Visit winner profile"}
+  //             </a>
+  //             <h2>{"Selected at, "}  <span>{new Date(generatedWinner.timestamp).toLocaleDateString('en-US')}</span> </h2>
+  //             <h3>{"Loaded "} {generatedWinner.retweetCount} {(generatedWinner.retweetCount > 1) ? "retweets." : "retweet."} </h3>
+  //           </div>
 
-            <div>
-              <a href={composeTweetLink(generatedWinner.tweetID, generatedWinner.tweeterHandle)} className="button" target="_blank" rel="noopener noreferrer">
-                tweet result
-              </a>
-            </div>
-          </>
-        }
+  //           <div>
+  //             <a href={composeTweetLink(generatedWinner.tweetID, generatedWinner.tweeterHandle)} className="button" target="_blank" rel="noopener noreferrer">
+  //               tweet result
+  //             </a>
+  //           </div>
+  //         </>
+  //       }
 
-      </div>
-    )
-  }
+  //     </div>
+  //   )
+  // }
 
   // or, if the user is unauthenticated, and there is a searched winner {}
 
@@ -340,46 +340,64 @@ export default function Home() {
         }
         {
           (searchedWinner.isWinner) &&
-          <div className='winner'>
-            <h2>{"GiveAway tweet :"}</h2>
-            <a href={"https://twitter.com/user/status/" + searchedWinner.tweetID} target="_blank" rel="noopener noreferrer">
-              {"https://twitter.com/user/status/" + searchedWinner.tweetID}
-            </a>
-            <h2>{"Winner Handle :"}
-              <span className='profile-link'> {"@" + searchedWinner.tweeterHandle} </span>
-            </h2>
-            <a href={"https://twitter.com/" + searchedWinner.tweeterHandle} target="_blank" rel="noopener noreferrer">
-              {"Visit winner profile"}
-            </a>
-            <h2>{"Selected at, "}  <span>{new Date(searchedWinner.timestamp).toLocaleDateString('en-US')}</span> </h2>
-          </div>
+          <>
+            <h1 className="winner-title">
+              {"Giveaway Result"}
+            </h1>
+            <div className='winner'>
+              <h2 className='giveaway-tweet'>{"Giveaway tweet"}</h2>
+              <a href={"https://twitter.com/user/status/" + searchedWinner.tweetID} target="_blank" rel="noopener noreferrer">
+                {"https://twitter.com/user/status/" + searchedWinner.tweetID}
+              </a>
+              <h2 className='giveaway-tweet'>{"Winner Twitter Handle"}</h2>
+              <p>
+                {"@" + searchedWinner.tweeterHandle}
+              </p>
+              <h2 className='giveaway-tweet'>{"Winner Selected At"}</h2>
+              <p>
+              {new Date(searchedWinner.timestamp).toLocaleDateString('en-US')}
+              </p>
+              <h3>
+                <a href={"https://twitter.com/" + searchedWinner.tweeterHandle} target="_blank" rel="noopener noreferrer">
+                  {"Visit winner profile"}
+                </a>
+              </h3>
+            </div>
+          </>
+
         }
       </div>
     )
   }
-  // else if aunethenticated user and no searched winner
-  // show input for entering tweet link to search
+  // // else if aunethenticated user and no searched winner
+  // // show input for entering tweet link to search
   else if (status === "unauthenticated") {
     return (
       <div className='main'>
         <div className='app_info'>
-          <img className='app_logo' src={isInputFocused ? '/back.png' : '/logo.png'} onClick={() => { setIsInputFocused(false) }} />
+          <img className='app_logo' src={'/logo.png'} onClick={() => { setIsInputFocused(false) }} />
           <p className='app_name'>{APP_NAME} </p>
         </div>
+        {/*  */}
         {
-          // don't show profile card if input is focused
-          (isInputFocused === false) &&
-          <Profile setTweetLinkError={setTweetLinkError} />
+          // (isInputFocused === true) &&
+          <h1 className='prompt'>{"Enter Tweet Link To View The Giveaway Winner."}</h1>
         }
-        {
-          (isInputFocused === true) &&
-          <p>{"Enter Tweet Link To search the giveaway winner."}</p>
-        }
-        <input className='input' value={queryTweetLink} placeholder='tweet link' type="text"
-          onFocus={() => { setIsInputFocused(true) }}
-          onChange={(event) => { setQueryTweetLink(event.target.value) }} />
-        <button className='button' onClick={async () => { await searchWinner(getTweetIDFromLink(queryTweetLink)) }}>view winner</button>
+        <div className='search-container'>
+
+          <input className='input' value={queryTweetLink} placeholder='tweet link' type="text"
+            spellCheck="false"
+            onFocus={() => { setIsInputFocused(true) }}
+            onBlur={() => { setIsInputFocused(false) }}
+            onChange={(event) => { setQueryTweetLink(event.target.value) }} />
+          {
+            (queryTweetLink === "") &&
+            <img className='search_logo' src={'/search.png'} onClick={() => { setIsInputFocused(false) }} />
+          }
+        </div>
         {tweetLinkError && <p className='tweet_link_error'>{tweetLinkError}</p>}
+
+        <button className='button' onClick={async () => { await searchWinner(getTweetIDFromLink(queryTweetLink)) }}>view winner</button>
       </div>
     )
   }
