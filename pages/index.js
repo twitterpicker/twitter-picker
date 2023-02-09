@@ -355,7 +355,7 @@ export default function Home() {
               </p>
               <h2 className='giveaway-tweet'>{"Winner Selected At"}</h2>
               <p>
-              {new Date(searchedWinner.timestamp).toLocaleDateString('en-US')}
+                {new Date(searchedWinner.timestamp).toLocaleDateString('en-US')}
               </p>
               <h3>
                 <a href={"https://twitter.com/" + searchedWinner.tweeterHandle} target="_blank" rel="noopener noreferrer">

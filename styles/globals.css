@@ -44,7 +44,7 @@
     }
 
     to {
-      color: black;
+      color: #5281ce;
     }
   }
 
@@ -78,7 +78,8 @@
 
   .start_animation_app_name {
     font-family: 'Inter', sans-serif;
-    color: black;
+    color: #5281ce;
+    font-weight: bolder;
     font-size: xx-large;
     animation-name: fadeEffectStartAnimationAppName;
     animation-duration: 2s;
@@ -201,7 +202,7 @@
     padding: 5px;
     border-radius: 50%;
     box-shadow:
-      12px 12px 16px 0 rgba(0, 0, 0, 0.25),
+      6px 6px 6px 0 rgba(0, 0, 0, 0.25),
       -2px -2px 2px 0 rgba(255, 255, 255, 0.3);
     cursor: pointer;
   }
@@ -211,6 +212,8 @@
     color: #5281ce;
     font-size: xx-large;
     font-weight: bold;
+    margin: auto;
+    width: max-content;
   }
 
   .tweet_link_error {
@@ -264,12 +267,15 @@
   /* on larger screens */
 
   @media screen and (min-width: 768px) {
-    .button {}
+    /* .button {} */
 
     .prompt {
       margin: unset;
       margin-top: 20vh;
       margin-bottom: 5vh;
+    }
+    .app_name {
+      margin: unset;
     }
 
 
