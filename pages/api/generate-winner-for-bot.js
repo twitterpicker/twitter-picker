@@ -37,7 +37,6 @@ const retweetLimit = LIMIT;
 const composeTweetLink = (tweetID, winnerHandle) => {
     let text = `The%20giveaway%20was%20for%20the%20tweeet%20%3A%20https%3A%2F%2Ftwitter.com%2Fuser%2Fstatus%2F${tweetID}%0AThe%20winner%20was%20%40${winnerHandle}%0AVisit%20the%20winner%20at%20https%3A%2F%2Ftwitter.com%2F${winnerHandle}%0Averify%20the%20winner%20at%20http%3A%2F%2Ftwitter-picker.netlify.app%2Fverify%2F${tweetID}`;
     // let text = `The%20giveaway%20was%20for%20the%20tweeet%20%3A%20https%3A%2F%2Ftwitter.com%2Fuser%2Fstatus%2F${tweetID}%0AThe%20winner%20was%20%40${winnerHandle}%0AVisit%20the%20winner%20at%20https%3A%2F%2Ftwitter.com%2F${winnerHandle}`;
-    // let text = `The%20giveaway%20was%20for%20the%20tweeet%20%3A%20https%3A%2F%2Ftwitter.com%2Fuser%2Fstatus%2F%24%7BtweetID%7D%0AThe%20winner%20was%20%40%24%7BwinnerHandle%7D%0AVisit%20the%20winner%20at%20https%3A%2F%2Ftwitter.com%2F%24%7BwinnerHandle%7D%0Averify%20the%20winner%20at%20http%3A%2F%2Ftwitter-picker.netlify.app%2Fverify%2F%24%7BtweetID%7D`;
     let link = `https://twitter.com/intent/tweet?in_reply_to=${tweetID}&text=${text}`;
     return link;
   
